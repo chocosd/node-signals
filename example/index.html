@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tiny-signals-core playground</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Playground</p>
+        <h1>tiny-signals-core</h1>
+        <p class="lede">
+          Signals, effects, and type-safe pipelines — no framework required.
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Counter</h2>
+          <p>Basic signal + effect reactivity.</p>
+        </div>
+        <div class="metric" id="count-display">0</div>
+        <div class="actions">
+          <button id="count-dec" type="button">−</button>
+          <button id="count-inc" type="button">+</button>
+          <button id="count-reset" type="button" class="ghost">Reset</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Pipeline</h2>
+          <p>
+            <code>string → number → ×2</code> via
+            <code>.to()</code> with inferred callback types.
+          </p>
+        </div>
+        <label class="field">
+          <span>Input value</span>
+          <input id="pipeline-input" type="text" value="12" />
+        </label>
+        <div class="stats">
+          <div class="stat">
+            <span class="label">Parsed</span>
+            <strong id="pipeline-parsed">12</strong>
+          </div>
+          <div class="stat">
+            <span class="label">Doubled</span>
+            <strong id="pipeline-doubled">24</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Effect log</h2>
+          <p>Every tracked dependency change is recorded below.</p>
+        </div>
+        <ul id="effect-log" class="log"></ul>
+        <button id="clear-log" type="button" class="ghost">Clear log</button>
+      </section>
+    </main>
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

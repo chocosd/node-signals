@@ -1,21 +1,26 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "nodenext",
-    "lib": ["ES2025"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "rootDir": "./src",
+    "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "nodenext",
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true
+    "stripInternal": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "tests"]
+  "exclude": ["node_modules", "dist", "tests", "example"]
 }
