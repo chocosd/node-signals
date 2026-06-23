@@ -52,7 +52,10 @@ pipelineInput.addEventListener("input", () => {
 const pipeline = rawInput.to(
   (sig) => Number(sig()),
   (sig) => sig() * 2,
-  (sig) => setTimeout(() => sig(), 2000),
+  (sig) =>
+    new Promise<number>((resolve) => {
+      setTimeout(() => resolve(sig() + 1), 2000);
+    }),
 );
 
 createEffect(() => {
@@ -62,9 +65,10 @@ createEffect(() => {
 });
 
 createEffect(() => {
-  const doubled = pipeline();
-  pipelineDoubled.textContent = Number.isNaN(doubled) ? "NaN" : String(doubled);
-  log(`Pipeline doubled → ${pipelineDoubled.textContent}`);
+  const delayed = pipeline();
+  pipelineDoubled.textContent =
+    delayed === undefined || Number.isNaN(delayed) ? "…" : String(delayed);
+  log(`Pipeline delayed → ${pipelineDoubled.textContent}`);
 });
 
 clearLog.addEventListener("click", () => {

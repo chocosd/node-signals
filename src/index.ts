@@ -4,6 +4,7 @@ export type {
   Cleanup,
   Effect,
   EffectFn,
+  Resolved,
   Signal,
   Transform,
 } from "./types";

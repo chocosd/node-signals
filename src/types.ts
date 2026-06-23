@@ -8,32 +8,34 @@ export type Effect = {
   cleanup?: Cleanup | undefined;
 };
 
-export type Transform<I, O> = (src: Signal<I>) => O;
+export type Resolved<T> = T extends PromiseLike<infer U> ? U : T;
+
+export type Transform<I, O> = (src: Signal<I>) => O | Promise<O>;
 
 type ToMethods<T> = {
-  to<A>(fn: (src: Signal<T>) => A): Signal<A>;
+  to<A>(fn: (src: Signal<T>) => A): Signal<Resolved<A>>;
   to<A, B>(
     fn1: (src: Signal<T>) => A,
-    fn2: (src: Signal<A>) => B,
-  ): Signal<B>;
+    fn2: (src: Signal<Resolved<A>>) => B,
+  ): Signal<Resolved<B>>;
   to<A, B, C>(
     fn1: (src: Signal<T>) => A,
-    fn2: (src: Signal<A>) => B,
-    fn3: (src: Signal<B>) => C,
-  ): Signal<C>;
+    fn2: (src: Signal<Resolved<A>>) => B,
+    fn3: (src: Signal<Resolved<B>>) => C,
+  ): Signal<Resolved<C>>;
   to<A, B, C, D>(
     fn1: (src: Signal<T>) => A,
-    fn2: (src: Signal<A>) => B,
-    fn3: (src: Signal<B>) => C,
-    fn4: (src: Signal<C>) => D,
-  ): Signal<D>;
+    fn2: (src: Signal<Resolved<A>>) => B,
+    fn3: (src: Signal<Resolved<B>>) => C,
+    fn4: (src: Signal<Resolved<C>>) => D,
+  ): Signal<Resolved<D>>;
   to<A, B, C, D, E>(
     fn1: (src: Signal<T>) => A,
-    fn2: (src: Signal<A>) => B,
-    fn3: (src: Signal<B>) => C,
-    fn4: (src: Signal<C>) => D,
-    fn5: (src: Signal<D>) => E,
-  ): Signal<E>;
+    fn2: (src: Signal<Resolved<A>>) => B,
+    fn3: (src: Signal<Resolved<B>>) => C,
+    fn4: (src: Signal<Resolved<C>>) => D,
+    fn5: (src: Signal<Resolved<D>>) => E,
+  ): Signal<Resolved<E>>;
 };
 
 export type Signal<T> = {

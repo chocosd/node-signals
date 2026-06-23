@@ -33,8 +33,9 @@
         <div class="panel-head">
           <h2>Pipeline</h2>
           <p>
-            <code>string → number → ×2</code> via
-            <code>.to()</code> with inferred callback types.
+            <code>string → number → ×2 → 2s delay</code> via
+            <code>.to()</code>. Async steps must return a
+            <code>Promise</code>.
           </p>
         </div>
         <label class="field">
@@ -47,7 +48,7 @@
             <strong id="pipeline-parsed">12</strong>
           </div>
           <div class="stat">
-            <span class="label">Doubled</span>
+            <span class="label">Delayed (2s)</span>
             <strong id="pipeline-doubled">24</strong>
           </div>
         </div>
