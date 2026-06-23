@@ -12,31 +12,51 @@
         <p class="eyebrow">Playground</p>
         <h1>tiny-signals-core</h1>
         <p class="lede">
-          Signals, effects, and type-safe pipelines — no framework required.
+          Signals, effects, pipelines, operators, batching, and async sources.
         </p>
       </header>
 
       <section class="panel">
         <div class="panel-head">
-          <h2>Counter</h2>
-          <p>Basic signal + effect reactivity.</p>
+          <div class="panel-head-text">
+            <h2>Counter + batch</h2>
+            <p>Basic reactivity. Batch applies two updates in one effect run.</p>
+          </div>
+          <button
+            type="button"
+            class="code-toggle ghost"
+            data-code="counter"
+            aria-label="View counter code"
+          >
+            Code
+          </button>
         </div>
         <div class="metric" id="count-display">0</div>
         <div class="actions">
           <button id="count-dec" type="button">−</button>
           <button id="count-inc" type="button">+</button>
           <button id="count-reset" type="button" class="ghost">Reset</button>
+          <button id="batch-run" type="button" class="ghost">Batch +5</button>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel-head">
-          <h2>Pipeline</h2>
-          <p>
-            <code>string → number → ×2 → 2s delay</code> via
-            <code>.to()</code>. Async steps must return a
-            <code>Promise</code>.
-          </p>
+          <div class="panel-head-text">
+            <h2>Pipeline operators</h2>
+            <p>
+              <code>map → map → debounceTime → map</code> with inferred types on
+              each step.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="code-toggle ghost"
+            data-code="pipeline"
+            aria-label="View pipeline code"
+          >
+            Code
+          </button>
         </div>
         <label class="field">
           <span>Input value</span>
@@ -48,21 +68,108 @@
             <strong id="pipeline-parsed">12</strong>
           </div>
           <div class="stat">
-            <span class="label">Delayed (2s)</span>
-            <strong id="pipeline-doubled">24</strong>
+            <span class="label">Debounced (+1)</span>
+            <strong id="pipeline-delayed">…</strong>
           </div>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel-head">
-          <h2>Effect log</h2>
-          <p>Every tracked dependency change is recorded below.</p>
+          <div class="panel-head-text">
+            <h2>Search (debounce + from)</h2>
+            <p>
+              Debounced query drives a reactive async <code>from()</code> source.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="code-toggle ghost"
+            data-code="search"
+            aria-label="View search code"
+          >
+            Code
+          </button>
+        </div>
+        <label class="field">
+          <span>Search</span>
+          <input id="search-input" type="text" placeholder="Try typing…" />
+        </label>
+        <div class="stat wide">
+          <span class="label">Results</span>
+          <strong id="search-results">Type to search…</strong>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-head-text">
+            <h2>Async source</h2>
+            <p>
+              Interval tick with a <code>computed</code> parity check. Stop clears
+              the interval.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="code-toggle ghost"
+            data-code="async"
+            aria-label="View async source code"
+          >
+            Code
+          </button>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="label">Tick</span>
+            <strong id="async-value">0</strong>
+          </div>
+          <div class="stat">
+            <span class="label">Status</span>
+            <strong id="async-status">even tick</strong>
+          </div>
+        </div>
+        <div class="actions panel-actions">
+          <button id="async-stop" type="button" class="ghost">Stop tick</button>
+          <button id="async-start" type="button" class="ghost" disabled>
+            Start tick
+          </button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div class="panel-head-text">
+            <h2>Effect log</h2>
+            <p>Every tracked dependency change is recorded below.</p>
+          </div>
+          <button
+            type="button"
+            class="code-toggle ghost"
+            data-code="effectLog"
+            aria-label="View effect log code"
+          >
+            Code
+          </button>
         </div>
         <ul id="effect-log" class="log"></ul>
         <button id="clear-log" type="button" class="ghost">Clear log</button>
       </section>
     </main>
+
+    <div id="code-drawer" class="drawer" aria-hidden="true">
+      <div id="drawer-backdrop" class="drawer-backdrop"></div>
+      <aside class="drawer-panel" role="dialog" aria-modal="true">
+        <header class="drawer-header">
+          <h3 id="drawer-title">Code</h3>
+          <button id="drawer-close" type="button" class="ghost drawer-close">
+            Close
+          </button>
+        </header>
+        <pre id="drawer-code" class="drawer-code"></pre>
+      </aside>
+    </div>
+
     <script type="module" src="/main.ts"></script>
   </body>
 </html>

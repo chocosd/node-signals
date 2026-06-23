@@ -12,6 +12,8 @@ export type Resolved<T> = T extends PromiseLike<infer U> ? U : T;
 
 export type Transform<I, O> = (src: Signal<I>) => O | Promise<O>;
 
+export type Operator<I, O> = Transform<I, O>;
+
 type ToMethods<T> = {
   to<A>(fn: (src: Signal<T>) => A): Signal<Resolved<A>>;
   to<A, B>(

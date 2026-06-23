@@ -1,4 +1,5 @@
 import { createEffect } from "../effect/effect";
+import { scheduleEffect } from "../../internal/batch";
 import { activeEffect } from "../../internal/context";
 import { isThenable } from "../../internal/promise";
 import type { Effect, Resolved, Signal } from "../../types";
@@ -102,9 +103,7 @@ export function signal<T>(initial: T): Signal<T> {
     value = newValue;
 
     subscribers.forEach((effect) => {
-      if (effect.active) {
-        effect();
-      }
+      scheduleEffect(effect);
     });
   };
 
