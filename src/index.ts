@@ -11,6 +11,8 @@ export {
   map,
   throttleTime,
 } from "./feature/operators";
+export { Fragment, render } from "./feature/render";
+export type { CreateElementOptions, RenderView } from "./feature/render";
 export { signal } from "./feature/signal";
 export type {
   Cleanup,

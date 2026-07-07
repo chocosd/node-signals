@@ -13,7 +13,7 @@ export type FromHttpResult<T> = {
 };
 
 export function fromHttp<T>(
-  url: string,
+  url: string | (() => string),
   options?: FromHttpOptions,
 ): FromHttpResult<T> {
   const data = signal<T | undefined>(undefined);
@@ -26,8 +26,15 @@ export function fromHttp<T>(
     loading.set(true);
     error.set(undefined);
 
-    const params = options?.params?.();
-    const requestUrl = buildUrl(url, params);
+    const baseUrl = typeof url === "function" ? url() : url;
+
+    if (!baseUrl) {
+      data.set(undefined);
+      loading.set(false);
+      return;
+    }
+
+    const requestUrl = buildUrl(baseUrl, options?.params?.());
 
     void fetch(requestUrl)
       .then(async (response) => {

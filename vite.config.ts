@@ -8,4 +8,7 @@ export default defineConfig({
       "tiny-signals-core": resolve(__dirname, "src/index.ts"),
     },
   },
+  optimizeDeps: {
+    include: ["monaco-editor"],
+  },
 });

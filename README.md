@@ -129,6 +129,53 @@ Use pipelines on HTTP data:
 const filtered = data.to(debounceTime(100), distinctUntilChanged());
 ```
 
+## render()
+
+Lightweight, effect-driven DOM fragments — not a component framework.
+
+```ts
+import { render, signal } from "tiny-signals-core";
+
+const count = signal(0);
+
+render("#app", (frag) => {
+  const button = frag.createElement("button", { key: "counter" });
+  const handler = () => count.set(count() + 1);
+
+  button.addEventListener("click", handler);
+  frag.onCleanup(() => button.removeEventListener("click", handler));
+
+  button.textContent = `Count: ${count()}`;
+  return button;
+});
+```
+
+`render()` wraps `createEffect`. When signals read inside the view change, the view re-runs.
+
+`createElement` accepts an optional options object:
+
+| Option | Purpose |
+| --- | --- |
+| `key` | Reuse this element across re-renders (needed when registering listeners) |
+| `text` | Keep text content in sync each render |
+| `children` | Mount child nodes once — no manual `append`/`replaceChildren` |
+
+```ts
+render("#app", (frag) => {
+  return frag.createElement("div", {
+    key: "root",
+    children: [
+      frag.createElement("p", {
+        key: "status",
+        text: loading() ? "Loading…" : String(data() ?? ""),
+      }),
+    ],
+  });
+});
+```
+
+Register listeners with `frag.onCleanup()` — they run before each re-render.
+
 ## When to use what
 
 | Feature | Use for |
@@ -136,6 +183,7 @@ const filtered = data.to(debounceTime(100), distinctUntilChanged());
 | `signal` | State |
 | `computed` | Derived values |
 | `createEffect` | Side effects |
+| `render` | DOM fragments |
 | `.to()` | Pipelines / composition |
 | `from()` | Async / event sources |
 | `fromHttp()` | API calls |

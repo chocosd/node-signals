@@ -10,151 +10,208 @@
     <main class="page">
       <header class="hero">
         <p class="eyebrow">Playground</p>
-        <h1>tiny-signals-core</h1>
+        <div class="hero-row">
+          <h1>tiny-signals-core</h1>
+          <nav class="tabs" aria-label="Sections">
+            <button
+              type="button"
+              class="tab active"
+              data-tab="demos"
+              aria-selected="true"
+            >
+              Demos
+            </button>
+            <button
+              type="button"
+              class="tab"
+              data-tab="playground"
+              aria-selected="false"
+            >
+              Playground
+            </button>
+          </nav>
+        </div>
         <p class="lede">
-          Signals, effects, pipelines, operators, batching, and async sources.
+          Signals, effects, pipelines, operators, batching, async sources, and
+          lightweight DOM rendering.
         </p>
       </header>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-head-text">
-            <h2>Counter + batch</h2>
-            <p>Basic reactivity. Batch applies two updates in one effect run.</p>
+      <div data-tab-panel="demos">
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>Counter + batch</h2>
+              <p>Basic reactivity. Batch applies two updates in one effect run.</p>
+            </div>
+            <button
+              type="button"
+              class="code-toggle ghost"
+              data-code="counter"
+              aria-label="View counter code"
+            >
+              Code
+            </button>
           </div>
-          <button
-            type="button"
-            class="code-toggle ghost"
-            data-code="counter"
-            aria-label="View counter code"
-          >
-            Code
-          </button>
-        </div>
-        <div class="metric" id="count-display">0</div>
-        <div class="actions">
-          <button id="count-dec" type="button">−</button>
-          <button id="count-inc" type="button">+</button>
-          <button id="count-reset" type="button" class="ghost">Reset</button>
-          <button id="batch-run" type="button" class="ghost">Batch +5</button>
-        </div>
-      </section>
+          <div class="metric" id="count-display">0</div>
+          <div class="actions">
+            <button id="count-dec" type="button">−</button>
+            <button id="count-inc" type="button">+</button>
+            <button id="count-reset" type="button" class="ghost">Reset</button>
+            <button id="batch-run" type="button" class="ghost">Batch +5</button>
+          </div>
+        </section>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-head-text">
-            <h2>Pipeline operators</h2>
-            <p>
-              <code>map → map → debounceTime → map</code> with inferred types on
-              each step.
-            </p>
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>Pipeline operators</h2>
+              <p>
+                <code>map → map → debounceTime → map</code> with inferred types on
+                each step.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="code-toggle ghost"
+              data-code="pipeline"
+              aria-label="View pipeline code"
+            >
+              Code
+            </button>
           </div>
-          <button
-            type="button"
-            class="code-toggle ghost"
-            data-code="pipeline"
-            aria-label="View pipeline code"
-          >
-            Code
-          </button>
-        </div>
-        <label class="field">
-          <span>Input value</span>
-          <input id="pipeline-input" type="text" value="12" />
-        </label>
-        <div class="stats">
-          <div class="stat">
-            <span class="label">Parsed</span>
-            <strong id="pipeline-parsed">12</strong>
+          <label class="field">
+            <span>Input value</span>
+            <input id="pipeline-input" type="text" value="12" />
+          </label>
+          <div class="stats">
+            <div class="stat">
+              <span class="label">Parsed</span>
+              <strong id="pipeline-parsed">12</strong>
+            </div>
+            <div class="stat">
+              <span class="label">Debounced (+1)</span>
+              <strong id="pipeline-delayed">…</strong>
+            </div>
           </div>
-          <div class="stat">
-            <span class="label">Debounced (+1)</span>
-            <strong id="pipeline-delayed">…</strong>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-head-text">
-            <h2>Search (debounce + from)</h2>
-            <p>
-              Debounced query drives a reactive async <code>from()</code> source.
-            </p>
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>Search (debounce + from)</h2>
+              <p>
+                Debounced query drives a reactive async
+                <code>from()</code> source.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="code-toggle ghost"
+              data-code="search"
+              aria-label="View search code"
+            >
+              Code
+            </button>
           </div>
-          <button
-            type="button"
-            class="code-toggle ghost"
-            data-code="search"
-            aria-label="View search code"
-          >
-            Code
-          </button>
-        </div>
-        <label class="field">
-          <span>Search</span>
-          <input id="search-input" type="text" placeholder="Try typing…" />
-        </label>
-        <div class="stat wide">
-          <span class="label">Results</span>
-          <strong id="search-results">Type to search…</strong>
-        </div>
-      </section>
+          <label class="field">
+            <span>Search</span>
+            <input id="search-input" type="text" placeholder="Try typing…" />
+          </label>
+          <div class="stat wide">
+            <span class="label">Results</span>
+            <strong id="search-results">Type to search…</strong>
+          </div>
+        </section>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-head-text">
-            <h2>Async source</h2>
-            <p>
-              Interval tick with a <code>computed</code> parity check. Stop clears
-              the interval.
-            </p>
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>Async source</h2>
+              <p>
+                Interval tick with a <code>computed</code> parity check. Stop
+                clears the interval.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="code-toggle ghost"
+              data-code="async"
+              aria-label="View async source code"
+            >
+              Code
+            </button>
           </div>
-          <button
-            type="button"
-            class="code-toggle ghost"
-            data-code="async"
-            aria-label="View async source code"
-          >
-            Code
-          </button>
-        </div>
-        <div class="stats">
-          <div class="stat">
-            <span class="label">Tick</span>
-            <strong id="async-value">0</strong>
+          <div class="stats">
+            <div class="stat">
+              <span class="label">Tick</span>
+              <strong id="async-value">0</strong>
+            </div>
+            <div class="stat">
+              <span class="label">Status</span>
+              <strong id="async-status">even tick</strong>
+            </div>
           </div>
-          <div class="stat">
-            <span class="label">Status</span>
-            <strong id="async-status">even tick</strong>
+          <div class="actions panel-actions">
+            <button id="async-stop" type="button" class="ghost">Stop tick</button>
+            <button id="async-start" type="button" class="ghost" disabled>
+              Start tick
+            </button>
           </div>
-        </div>
-        <div class="actions panel-actions">
-          <button id="async-stop" type="button" class="ghost">Stop tick</button>
-          <button id="async-start" type="button" class="ghost" disabled>
-            Start tick
-          </button>
-        </div>
-      </section>
+        </section>
 
-      <section class="panel">
-        <div class="panel-head">
-          <div class="panel-head-text">
-            <h2>Effect log</h2>
-            <p>Every tracked dependency change is recorded below.</p>
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>Effect log</h2>
+              <p>Every tracked dependency change is recorded below.</p>
+            </div>
+            <button
+              type="button"
+              class="code-toggle ghost"
+              data-code="effectLog"
+              aria-label="View effect log code"
+            >
+              Code
+            </button>
           </div>
-          <button
-            type="button"
-            class="code-toggle ghost"
-            data-code="effectLog"
-            aria-label="View effect log code"
-          >
-            Code
-          </button>
-        </div>
-        <ul id="effect-log" class="log"></ul>
-        <button id="clear-log" type="button" class="ghost">Clear log</button>
-      </section>
+          <ul id="effect-log" class="log"></ul>
+          <button id="clear-log" type="button" class="ghost">Clear log</button>
+        </section>
+      </div>
+
+      <div data-tab-panel="playground" hidden>
+        <section class="panel playground-panel">
+          <div class="panel-head">
+            <div class="panel-head-text">
+              <h2>render()</h2>
+              <p>
+                Effect-driven DOM. Use <code>key</code> to reuse elements,
+                <code>text</code> and <code>children</code> for updates.
+              </p>
+            </div>
+            <div class="playground-actions">
+              <button
+                type="button"
+                id="sample-counter"
+                class="ghost"
+              >
+                Counter sample
+              </button>
+              <button type="button" id="sample-search" class="ghost">
+                Search sample
+              </button>
+              <button type="button" id="run-playground">Run</button>
+            </div>
+          </div>
+          <div class="playground-split">
+            <div id="editor-container" class="editor-pane"></div>
+            <div id="render-app" class="preview-pane">
+              <p class="preview-note">Press Run to mount a view.</p>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <div id="code-drawer" class="drawer" aria-hidden="true">
