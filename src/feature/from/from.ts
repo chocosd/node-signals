@@ -1,7 +1,7 @@
-import { createEffect } from "../effect/effect";
-import { isThenable } from "../../internal/promise";
-import { signal } from "../signal/signal";
-import type { Cleanup, Signal } from "../../types";
+import { createEffect } from "../effect/effect.js";
+import { isThenable } from "../../internal/promise.js";
+import { signal } from "../signal/signal.js";
+import type { Cleanup, Signal } from "../../types.js";
 
 type EmitFactory<T> = (emit: (value: T) => void) => Cleanup;
 type ValueFactory<T> = () => T | Promise<T>;

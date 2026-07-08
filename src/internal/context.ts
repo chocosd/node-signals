@@ -1,4 +1,4 @@
-import type { Effect } from "../types";
+import type { Effect } from "../types.js";
 
 export let activeEffect: Effect | null = null;
 

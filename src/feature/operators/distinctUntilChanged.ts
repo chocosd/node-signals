@@ -1,4 +1,4 @@
-import type { Transform } from "../../types";
+import type { Transform } from "../../types.js";
 
 export function distinctUntilChanged<T>(
   equals: (previous: T, current: T) => boolean = Object.is,

@@ -1,5 +1,5 @@
-import { activeEffect, setActiveEffect } from "../../internal/context";
-import type { Effect, EffectFn } from "../../types";
+import { activeEffect, setActiveEffect } from "../../internal/context.js";
+import type { Effect, EffectFn } from "../../types.js";
 
 export function createEffect(fn: EffectFn): () => void {
   const effect: Effect = (() => {

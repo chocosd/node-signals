@@ -5,7 +5,8 @@ export default defineConfig({
   root: "example",
   resolve: {
     alias: {
-      "tiny-signals-core": resolve(__dirname, "src/index.ts"),
+      "node-signals/dom": resolve(__dirname, "src/dom.ts"),
+      "node-signals": resolve(__dirname, "src/index.ts"),
     },
   },
   optimizeDeps: {

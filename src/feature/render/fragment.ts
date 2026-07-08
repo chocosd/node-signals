@@ -1,4 +1,4 @@
-import type { Cleanup } from "../../types";
+import type { Cleanup } from "../../types.js";
 
 export type CreateElementOptions = {
   /** Reuse this element across re-renders instead of creating a new one. */

@@ -1,5 +1,5 @@
-import { createEffect } from "../effect/effect";
-import { Fragment } from "./fragment";
+import { createEffect } from "../effect/effect.js";
+import { Fragment } from "./fragment.js";
 
 export type RenderView = (frag: Fragment) => Node;
 
@@ -39,4 +39,5 @@ export function render(
   };
 }
 
-export { Fragment } from "./fragment";
+export { Fragment } from "./fragment.js";
+export type { CreateElementOptions } from "./fragment.js";

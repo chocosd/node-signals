@@ -1,4 +1,4 @@
-import type { Effect } from "../types";
+import type { Effect } from "../types.js";
 
 let batchDepth = 0;
 const pendingEffects = new Set<Effect>();

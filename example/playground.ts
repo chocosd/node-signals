@@ -7,10 +7,10 @@ import {
   from,
   fromHttp,
   map,
-  render,
   signal,
-} from "tiny-signals-core";
-import type { Fragment } from "tiny-signals-core";
+} from "node-signals";
+import { render } from "node-signals/dom";
+import type { Fragment } from "node-signals/dom";
 import {
   defaultPlaygroundCode,
   searchPlaygroundCode,

@@ -7,7 +7,7 @@ import {
   from,
   map,
   signal,
-} from "tiny-signals-core";
+} from "node-signals";
 import { initCodeDrawer } from "./drawer";
 
 export function initDemos(): void {

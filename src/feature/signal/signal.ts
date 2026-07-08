@@ -1,8 +1,8 @@
-import { createEffect } from "../effect/effect";
-import { scheduleEffect } from "../../internal/batch";
-import { activeEffect } from "../../internal/context";
-import { isThenable } from "../../internal/promise";
-import type { Effect, Resolved, Signal } from "../../types";
+import { createEffect } from "../effect/effect.js";
+import { scheduleEffect } from "../../internal/batch.js";
+import { activeEffect } from "../../internal/context.js";
+import { isThenable } from "../../internal/promise.js";
+import type { Effect, Resolved, Signal } from "../../types.js";
 
 function chainTransform<I, O>(
   source: Signal<I>,

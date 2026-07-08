@@ -1,19 +1,20 @@
-export { batch } from "./feature/batch/batch";
-export { computed } from "./feature/computed/computed";
-export { createEffect } from "./feature/effect/effect";
-export { from } from "./feature/from/from";
-export { fromHttp } from "./feature/fromHttp/fromHttp";
-export type { FromHttpOptions, FromHttpResult } from "./feature/fromHttp/fromHttp";
+export { batch } from "./feature/batch/batch.js";
+export { computed } from "./feature/computed/computed.js";
+export { createEffect } from "./feature/effect/effect.js";
+export { from } from "./feature/from/from.js";
+export { fromHttp } from "./feature/fromHttp/fromHttp.js";
+export type {
+  FromHttpOptions,
+  FromHttpResult,
+} from "./feature/fromHttp/fromHttp.js";
 export {
   debounceTime,
   debug,
   distinctUntilChanged,
   map,
   throttleTime,
-} from "./feature/operators";
-export { Fragment, render } from "./feature/render";
-export type { CreateElementOptions, RenderView } from "./feature/render";
-export { signal } from "./feature/signal";
+} from "./feature/operators/index.js";
+export { signal } from "./feature/signal/index.js";
 export type {
   Cleanup,
   Effect,
@@ -22,4 +23,4 @@ export type {
   Resolved,
   Signal,
   Transform,
-} from "./types";
+} from "./types.js";
