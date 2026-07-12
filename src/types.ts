@@ -2,11 +2,22 @@ export type Cleanup = () => void;
 
 export type EffectFn = () => void | Cleanup;
 
-export type Effect = {
-  (): void;
+/** A reactive source that observers can subscribe to (a signal or computed). */
+export interface Dependency {
+  observers: Set<Observer>;
+}
+
+/** Something that reads dependencies and reacts when they change. */
+export interface Observer {
+  deps: Set<Dependency>;
+  markDirty(): void;
+}
+
+export interface Effect extends Observer {
   active: boolean;
+  run(): void;
   cleanup?: Cleanup | undefined;
-};
+}
 
 export type Resolved<T> = T extends PromiseLike<infer U> ? U : T;
 

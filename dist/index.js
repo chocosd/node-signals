@@ -1,3 +1,4 @@
+export { untracked } from "./internal/context.js";
 export { batch } from "./feature/batch/batch.js";
 export { computed } from "./feature/computed/computed.js";
 export { createEffect } from "./feature/effect/effect.js";

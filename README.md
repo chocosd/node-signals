@@ -61,6 +61,28 @@ const dispose = createEffect(() => {
 dispose();
 ```
 
+## untracked
+
+Run a callback without subscribing the current effect or computed to signal reads inside it:
+
+```ts
+import { createEffect, untracked } from "@chocosd/node-signals";
+
+function subscribeSignal(signalFn, listener) {
+  let initialized = false;
+  return createEffect(() => {
+    signalFn(); // only dependency you want
+    if (!initialized) {
+      initialized = true;
+      return;
+    }
+    untracked(() => listener()); // mounting/reads here don't widen deps
+  });
+}
+```
+
+Use this when an effect callback reads signals you do not want to track — for example, mounting DOM or binding a subtree while `activeObserver` is still the parent effect. Nested effects created inside `untracked` still track their own dependencies.
+
 ## Batch
 
 ```ts
@@ -152,11 +174,62 @@ createEffect(() => {
 });
 ```
 
-Use pipelines on HTTP data:
+Pipe operators directly over the response — `.to()` on the result operates on the `data` signal:
 
 ```ts
-const filtered = data.to(debounceTime(100), distinctUntilChanged());
+const posts = fromHttp("/posts");
+
+const filtered = posts.to(debounceTime(100), distinctUntilChanged());
+// equivalent to: posts.data.to(debounceTime(100), distinctUntilChanged())
 ```
+
+### Aborting
+
+Every request runs under an `AbortController`. Changing a reactive url/param
+automatically aborts the stale request, and `abort()` cancels the in-flight
+request and stops the resource from reacting to further changes — handy in a
+teardown hook:
+
+```ts
+const posts = fromHttp(() => `/posts?date=${dateSig()}`);
+
+// later, e.g. onDestroy()
+posts.abort();
+```
+
+### Interceptors
+
+`fetch` has no built-in interceptors, so `fromHttp` adds a small pipeline.
+Request interceptors transform `{ url, init }` before the request is sent;
+response interceptors transform the `Response` before it is parsed. Each runs in
+order and may be async. The abort signal is always attached at fetch time, so
+interceptors can't accidentally disable cancellation.
+
+```ts
+const posts = fromHttp("/posts", {
+  init: { headers: { accept: "application/json" } },
+  interceptors: {
+    request: [
+      (req) => ({
+        ...req,
+        init: {
+          ...req.init,
+          headers: { ...req.init.headers, authorization: `Bearer ${token()}` },
+        },
+      }),
+    ],
+    response: [
+      (res) => {
+        if (res.status === 401) throw new Error("Unauthorized");
+        return res;
+      },
+    ],
+  },
+});
+```
+
+Reactive inputs still belong in the `url` factory or `params` — interceptors are
+for cross-cutting concerns (auth, logging, unwrapping) rather than reactivity.
 
 ## render() — browser only
 

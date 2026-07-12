@@ -1,6 +1,6 @@
 import { createEffect } from "../effect/effect.js";
-import { scheduleEffect } from "../../internal/batch.js";
-import { activeEffect } from "../../internal/context.js";
+import { notify } from "../../internal/batch.js";
+import { track } from "../../internal/context.js";
 import { isThenable } from "../../internal/promise.js";
 function chainTransform(source, transform) {
     const derived = signal(undefined);
@@ -24,7 +24,7 @@ function chainTransform(source, transform) {
     });
     return derived;
 }
-function createToMethod(source) {
+export function createToMethod(source) {
     function to(fn1, fn2, fn3, fn4, fn5) {
         const step1 = chainTransform(source, fn1);
         if (fn2 === undefined)
@@ -44,20 +44,17 @@ function createToMethod(source) {
 }
 export function signal(initial) {
     let value = initial;
-    const subscribers = new Set();
+    const dep = { observers: new Set() };
     const getter = (() => {
-        if (activeEffect) {
-            subscribers.add(activeEffect);
-        }
+        track(dep);
         return value;
     });
     getter.set = (newValue) => {
+        // Auto-memoize: an unchanged value never notifies observers.
         if (Object.is(value, newValue))
             return;
         value = newValue;
-        subscribers.forEach((effect) => {
-            scheduleEffect(effect);
-        });
+        notify(dep.observers);
     };
     getter.update = (updater) => {
         getter.set(updater(value));

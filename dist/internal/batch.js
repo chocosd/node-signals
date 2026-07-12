@@ -1,32 +1,60 @@
 let batchDepth = 0;
-const pendingEffects = new Set();
+const pending = new Set();
 export function isBatching() {
     return batchDepth > 0;
 }
-export function scheduleEffect(effect) {
-    if (batchDepth > 0) {
-        pendingEffects.add(effect);
-        return;
+export function startBatch() {
+    batchDepth += 1;
+}
+export function endBatch() {
+    batchDepth -= 1;
+    if (batchDepth === 0) {
+        flush();
     }
-    if (effect.active) {
-        effect();
+}
+/** Queue an effect to run once the current mark phase settles. */
+export function scheduleEffect(effect) {
+    pending.add(effect);
+}
+function flush() {
+    // Guard against re-entrant flushes while effects trigger further updates.
+    batchDepth += 1;
+    try {
+        while (pending.size > 0) {
+            const effects = [...pending];
+            pending.clear();
+            for (const effect of effects) {
+                if (effect.active) {
+                    effect.run();
+                }
+            }
+        }
+    }
+    finally {
+        batchDepth -= 1;
+    }
+}
+/**
+ * Mark every observer of a changed source dirty inside a batch boundary, so
+ * computeds are all flagged before any effect runs (no glitches / double runs).
+ */
+export function notify(observers) {
+    startBatch();
+    try {
+        for (const observer of [...observers]) {
+            observer.markDirty();
+        }
+    }
+    finally {
+        endBatch();
     }
 }
 export function batch(fn) {
-    batchDepth += 1;
+    startBatch();
     try {
         fn();
     }
     finally {
-        batchDepth -= 1;
-        if (batchDepth === 0) {
-            const effects = [...pendingEffects];
-            pendingEffects.clear();
-            for (const effect of effects) {
-                if (effect.active) {
-                    effect();
-                }
-            }
-        }
+        endBatch();
     }
 }

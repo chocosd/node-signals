@@ -1,8 +1,8 @@
 import { createEffect } from "../effect/effect.js";
-import { scheduleEffect } from "../../internal/batch.js";
-import { activeEffect } from "../../internal/context.js";
+import { notify } from "../../internal/batch.js";
+import { track } from "../../internal/context.js";
 import { isThenable } from "../../internal/promise.js";
-import type { Effect, Resolved, Signal } from "../../types.js";
+import type { Dependency, Resolved, Signal } from "../../types.js";
 
 function chainTransform<I, O>(
   source: Signal<I>,
@@ -37,7 +37,7 @@ function chainTransform<I, O>(
   return derived;
 }
 
-function createToMethod<T>(source: Signal<T>): Signal<T>["to"] {
+export function createToMethod<T>(source: Signal<T>): Signal<T>["to"] {
   function to<A>(fn: (src: Signal<T>) => A): Signal<Resolved<A>>;
   function to<A, B>(
     fn1: (src: Signal<T>) => A,
@@ -88,23 +88,19 @@ function createToMethod<T>(source: Signal<T>): Signal<T>["to"] {
 
 export function signal<T>(initial: T): Signal<T> {
   let value = initial;
-  const subscribers = new Set<Effect>();
+  const dep: Dependency = { observers: new Set() };
 
   const getter = (() => {
-    if (activeEffect) {
-      subscribers.add(activeEffect);
-    }
+    track(dep);
     return value;
   }) as Signal<T>;
 
   getter.set = (newValue: T) => {
+    // Auto-memoize: an unchanged value never notifies observers.
     if (Object.is(value, newValue)) return;
 
     value = newValue;
-
-    subscribers.forEach((effect) => {
-      scheduleEffect(effect);
-    });
+    notify(dep.observers);
   };
 
   getter.update = (updater: (prev: T) => T) => {

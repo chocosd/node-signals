@@ -1,6 +1,6 @@
 {
   "name": "@chocosd/node-signals",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tiny reactive signals engine: signals, effects, computed, pipelines, operators, and async sources. Runs in Node and the browser.",
   "type": "module",
   "main": "./dist/index.js",

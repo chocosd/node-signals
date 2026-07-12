@@ -1,11 +1,16 @@
+export { untracked } from "./internal/context.js";
 export { batch } from "./feature/batch/batch.js";
 export { computed } from "./feature/computed/computed.js";
 export { createEffect } from "./feature/effect/effect.js";
 export { from } from "./feature/from/from.js";
 export { fromHttp } from "./feature/fromHttp/fromHttp.js";
 export type {
+  FromHttpInterceptors,
   FromHttpOptions,
   FromHttpResult,
+  HttpRequest,
+  RequestInterceptor,
+  ResponseInterceptor,
 } from "./feature/fromHttp/fromHttp.js";
 export {
   debounceTime,
